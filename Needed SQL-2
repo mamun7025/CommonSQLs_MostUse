@@ -1,1 +1,58 @@
+
+Excel File To DB Insert Query
+
 ="insert into bas_model (id, ORGANIZATION_ID, OPERATING_UNIT_ID, code, name, SHORT_DESCRIPTION, SEARCH_DESCRIPTION) VALUES (bas_model_seq.NEXTVAL;,'"&B2&"','"&C2&"','"&D2&"','"&E2&"','"&F2&"','"&G2&"'  ) ;"
+
+
+------------ Others
+SELECT
+    I.ID                   AS ITEM_ID,
+    I.CODE,
+    I.DESCRIPTION,
+    M.ID                   AS MODEL_ID,
+    M.NAME                 AS MODEL_NAME,
+    M.SEARCH_DESCRIPTION   AS TRADE_PRICE,
+    'update bas_item set model_id = '
+    || M.ID
+    || ', regular_price = '
+    || M.SEARCH_DESCRIPTION
+    || ' where id = '
+    || I.ID
+    || ';' AS UP_SQL
+FROM
+    BAS_ITEM    I
+    LEFT JOIN BAS_MODEL   M ON I.DESCRIPTION LIKE ( '%'
+                                                  || M.NAME
+                                                  || '%' )
+WHERE
+    ( 1 = 1 )
+    AND I.FINISHED_GOOD_ITEM = 1
+    AND M.ID IS NOT NULL;
+    
+    
+    ==========================
+SELECT
+    id,
+    item_type_id,
+    code,
+    marge_external_ids,
+    replace(marge_external_ids, '.0') AS clean_marge_external_ids,
+    external_reference
+FROM
+    bas_item
+WHERE
+    item_type_id = '2'
+    AND marge_external_ids LIKE '%.0%'
+ORDER BY
+    id DESC;
+    
+    
+update
+    bas_item
+    set marge_external_ids = replace(marge_external_ids, '.0')
+WHERE
+    item_type_id = '2'
+    AND marge_external_ids LIKE '%.0%';
+    
+    
+    commit;
