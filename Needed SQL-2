@@ -1,0 +1,1 @@
+="insert into bas_model (id, ORGANIZATION_ID, OPERATING_UNIT_ID, code, name, SHORT_DESCRIPTION, SEARCH_DESCRIPTION) VALUES (bas_model_seq.NEXTVAL;,'"&B2&"','"&C2&"','"&D2&"','"&E2&"','"&F2&"','"&G2&"'  ) ;"
