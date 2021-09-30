@@ -1,0 +1,41 @@
+--------- Insert
+CREATE OR REPLACE TRIGGER SALESINVOICE_LINE__AI AFTER INSERT ON SALESINVOICE_LINE FOR EACH ROW
+DECLARE
+    TR LOG_SALESINVOICE_LINE%ROWTYPE;
+BEGIN
+        TR.LOG_ID               := LOG_SALESINVOICE_LINE_SEQ.NEXTVAL;
+        TR.LOG_TIMESTAMP        := SYSDATE;
+        TR.LOG_OPERATION        := 'insert';
+        TR.LOG_USER             := :NEW.CREATION_USER;
+        -- Other
+        TR.REF_ID               := :NEW.ID;
+        TR.SALES_INVOICE_ID     := :NEW.SALES_INVOICE_ID;
+        TR.SALES_INVOICE_CODE   := :NEW.SALES_INVOICE_CODE;
+        TR.ORDER_LINE           := :NEW.ORDER_LINE;
+        TR.MODEL_ID             := :NEW.MODEL_ID;
+        TR.ITEM_ID              := :NEW.ITEM_ID;
+        TR.ITEM_CODE            := :NEW.ITEM_CODE;
+        TR.ITEM_NAME            := :NEW.ITEM_NAME;
+        TR.ITEM_DESCRIPTION     := :NEW.ITEM_DESCRIPTION;
+        TR.RETURN_QUANTITY      := :NEW.RETURN_QUANTITY;
+        TR.QUANTITY             := :NEW.QUANTITY;
+        TR.UOM_CODE             := :NEW.UOM_CODE;
+        TR.UNIT_PRICE           := :NEW.UNIT_PRICE;
+        TR.AMOUNT               := :NEW.AMOUNT;
+        TR.DISCOUNT             := :NEW.DISCOUNT;
+        TR.DISCOUNT_AMOUNT      := :NEW.DISCOUNT_AMOUNT;
+        TR.VAT_PCT              := :NEW.VAT_PCT;
+        TR.VAT_AMOUNT           := :NEW.VAT_AMOUNT;
+        TR.SD_PCT               := :NEW.SD_PCT;
+        TR.SD_AMOUNT            := :NEW.SD_AMOUNT;
+        TR.COGS_UNIT_PRICE      := :NEW.COGS_UNIT_PRICE;
+        TR.TOTAL_TAX_AMOUNT     := :NEW.TOTAL_TAX_AMOUNT;
+        TR.NET_TOTAL_AMOUNT     := :NEW.NET_TOTAL_AMOUNT;
+        TR.CREATION_USER        := :NEW.CREATION_USER;
+        TR.CREATION_DATETIME    := :NEW.CREATION_DATETIME;
+        TR.LAST_UPDATE_USER     := :NEW.LAST_UPDATE_USER;
+        TR.LAST_UPDATE_DATETIME := :NEW.LAST_UPDATE_DATETIME;
+        TR.REMARKS              := :NEW.REMARKS;
+
+        INSERT INTO LOG_SALESINVOICE_LINE VALUES TR;
+END;
